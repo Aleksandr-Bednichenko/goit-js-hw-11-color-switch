@@ -1,44 +1,36 @@
-import './styles.css';
-import menu from './menu.json';
-import menuTemplate from './template/menu.hbs';
+const colors = [
+  '#FFFFFF',
+  '#2196F3',
+  '#4CAF50',
+  '#FF9800',
+  '#009688',
+  '#795548',
+];
 
-const checkBox = document.querySelector('.theme-switch__toggle')
-const body = document.querySelector('body');
-
-const menuData = {
-    menu,
+const randomIntegerFromInterval = (min, max) => {
+  return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
-const menuHtml = menuTemplate(menuData);
-document.querySelector('.js-menu').innerHTML = menuHtml;
+const btnStart = document.querySelector('[data-action="start"]')
+const btnStop = document.querySelector('[data-action="stop"]')
+const body = document.querySelector('body')
 
-const Theme = {
-  LIGHT: 'light-theme',
-  DARK: 'dark-theme',
-};
-
-checkBox.addEventListener('change', onClick);
-
-function onClick() {
-  body.classList.remove(Theme.LIGHT)
-  body.classList.remove(Theme.DARK)
-  if (checkBox.checked) {    
-    body.classList.add(Theme.DARK)
-    localStorage.setItem('themeBody','dark') 
-  } else {    
-    body.classList.add(Theme.LIGHT)
-    localStorage.setItem('themeBody','light') 
-  }
+btnStart.addEventListener('click', clickStart)
+btnStop.addEventListener('click', clickStop)
+function clickStart() { 
+  btnStart.disabled = true; 
+  timerId = setInterval(() => {
+    bodyColor()
+  }, 1000);
 }
-const localValue = localStorage.getItem('themeBody');
 
-if (localValue === 'dark') {
-  body.classList.remove(Theme.LIGHT)
-  body.classList.add(Theme.DARK)
-  checkBox.checked = true;
+function clickStop(){ 
+  btnStart.disabled = false;
+  clearInterval(timerId);
 }
-else {
-  body.classList.remove(Theme.DARK)
-  body.classList.add(Theme.LIGHT)
-  checkBox.checked = false;
-  }
+
+function bodyColor(){
+  const colorRandom = randomIntegerFromInterval(0, colors.length - 1)
+  body.style.background = colors[colorRandom];
+}
+
