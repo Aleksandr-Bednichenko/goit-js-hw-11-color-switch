@@ -17,16 +17,22 @@ const body = document.querySelector('body')
 
 btnStart.addEventListener('click', clickStart)
 btnStop.addEventListener('click', clickStop)
+let timerId;
 function clickStart() { 
-  btnStart.disabled = true; 
-  timerId = setInterval(() => {
+  if (timerId !== 0) {
+    return;
+  }
+  // btnStart.disabled = true; 
+   timerId = setInterval(() => {
     bodyColor()
+    console.log(timerId)
   }, 1000);
 }
 
 function clickStop(){ 
-  btnStart.disabled = false;
+  // btnStart.disabled = false;
   clearInterval(timerId);
+  timerId = 0;
 }
 
 function bodyColor(){
